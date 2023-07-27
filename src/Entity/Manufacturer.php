@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ManufacturerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,6 +29,14 @@ class Manufacturer
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $listenedDate = null;
+
+    #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: Product::class)]
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -80,4 +90,13 @@ class Manufacturer
 
         return $this;
     }
+
+    /**
+     * @return <Product>
+     */
+    public function getProducts(): iterable|ArrayCollection
+    {
+        return $this->products;
+    }
+
 }
