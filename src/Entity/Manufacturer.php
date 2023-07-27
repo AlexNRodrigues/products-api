@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ManufacturerRepository::class)]
 #[ApiResource]
@@ -19,15 +20,20 @@ class Manufacturer
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\Column(length: 3)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max:3)]
     private ?string $countryCode = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\NotNull]
     private ?\DateTimeInterface $listenedDate = null;
 
     #[ORM\OneToMany(mappedBy: 'manufacturer', targetEntity: Product::class)]
